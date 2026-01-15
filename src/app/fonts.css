@@ -1,8 +1,10 @@
-
-
 @font-face {
-    font-family: 'NeueHaasUnica-Bold';
-    src: url('/fonts/NeueHaasUnica-Bold.ttf') format('truetype');
+    font-family: "NeueHaasUnica-Bold";
+    src: url("/fonts/NeueHaasUnica-Bold.ttf") format("truetype");
+}
+@font-face {
+    font-family: "NeueHaasUnicaPro-Medium";
+    src: url("/fonts/NeueHaasUnicaPro-Medium.ttf") format("truetype");
 }
 
 @font-face {
@@ -17,7 +19,7 @@
     font-style: normal;
 }
 
-.off{
+.off {
     font-family: "OffBit-101Bold", sans-serif;
 }
 
@@ -27,5 +29,5 @@
 }
 
 .medium-font {
-    font-family: 'NeueHaasUnica-Bold', sans-serif;
+    font-family: "NeueHaasUnicaPro-Medium", sans-serif;
 }
