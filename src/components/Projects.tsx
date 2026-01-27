@@ -31,7 +31,7 @@ const Projects = () => {
       <div
         className="flex flex-col lg:flex-row"
         style={{
-          gap: "clamp(0.5rem, 0.5vw, 240rem)",
+          gap: "clamp(0.5rem, 0.7vw, 240rem)",
         }}
       >
         {columns.map((column, columnIndex) => (
@@ -50,7 +50,7 @@ const Projects = () => {
               >
 
                 <div
-                  className="work-item group relative overflow-hidden cursor-pointer bg-black rounded-md"
+                  className="work-item group relative overflow-hidden cursor-pointer bg-black"
                   style={{
                     width: '100%',
                     marginBottom: "clamp(0.5rem, 0.5vw, 240rem)",

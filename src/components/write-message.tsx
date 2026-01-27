@@ -29,18 +29,17 @@ import {
   ReactSketchCanvasRef,
   ReactSketchCanvas as SketchCanvas,
 } from "react-sketch-canvas";
-import { Input } from "./ui/input";
-import { Slider } from "./ui/slider";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 import { useRef } from "react";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { cn, uploadImage } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
-import api from "@/lib/api";
 
 const dialog = {
-  title: "Send Message",
+  title: "Write Message",
 };
 
+// Define the state type
 type State = {
   open: boolean;
   isMobile: boolean;
@@ -51,16 +50,18 @@ type State = {
   dialogTitle: string;
 };
 
+// Define the initial state
 const initialState = {
   open: false,
   isMobile: false,
-  strokeWidth: 10,
-  strokeColor: "#000000",
+  strokeWidth: 10, // Default stroke width
+  strokeColor: "#000000", // Default stroke color
   eraseMode: false,
   showStrokeWidthPopup: false,
-  dialogTitle: "Send Message",
+  dialogTitle: "Write Message",
 };
 
+// Define the action type
 type Action =
   | { type: "SET_IS_MOBILE"; payload: boolean }
   | { type: "SET_STROKE_WIDTH"; payload: number }
@@ -69,6 +70,7 @@ type Action =
   | { type: "SHOW_STROKE_WIDTH_POPUP"; payload: boolean }
   | { type: "SET_DIALOG_TITLE"; payload: string };
 
+// Define the reducer function
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "SET_IS_MOBILE":
@@ -88,15 +90,14 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-// Add prop type for the callback
-interface EditProfileButtonProps {
-  onMessageSent?: () => void;
-}
-
-export function EditProfileButton({ onMessageSent }: EditProfileButtonProps) {
+export function EditProfileButton({
+}: {
+}) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [open, setOpen] = useState(false);
   const canvasRef = useRef<ReactSketchCanvasRef>(null!);
+
+ 
 
   useEffect(() => {
     const checkMobile = () => {
@@ -112,10 +113,6 @@ export function EditProfileButton({ onMessageSent }: EditProfileButtonProps) {
   const handleSubmit = async () => {
     setOpen(false);
     dispatch({ type: "SET_DIALOG_TITLE", payload: "Message Sent" });
-    // Call the callback to refresh messages
-    if (onMessageSent) {
-      onMessageSent();
-    }
   };
 
   return (
@@ -126,14 +123,16 @@ export function EditProfileButton({ onMessageSent }: EditProfileButtonProps) {
             disabled={state.dialogTitle === "Message Sent"}
             asChild
           >
-            <Button variant="secondary">
               <span className="shiny-text">{state.dialogTitle}</span>
-            </Button>
           </DrawerTrigger>
-          <DrawerContent className=" border border-l-0 border-b-0 border-r-0">
-            <div className="mx-auto w-full max-w-sm">
+          <DrawerContent
+          style={{
+            padding: "clamp(0.5rem,1vw, 100rem)",
+          }}
+          className=" z-[9999] bg-black h-full border-0">
+            <div className="mx-auto h-full w-full max-w-sm">
               <DrawerHeader>
-                <DrawerTitle className="flex items-center gap-1.5 justify-between">
+                <DrawerTitle className="flex items-center gap-1 justify-between">
                   <CanvasControls
                     state={state}
                     dispatch={dispatch}
@@ -158,11 +157,15 @@ export function EditProfileButton({ onMessageSent }: EditProfileButtonProps) {
             disabled={state.dialogTitle === "Message Sent"}
             asChild
           >
-            <Button variant="secondary">{state.dialogTitle}</Button>
+            <span className=" leading-0">{state.dialogTitle}</span>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent
+          style={{
+            padding: "clamp(0.5rem,1vw, 100rem)",
+          }}
+          className="sm:max-w-[425px]  border-0 z-[9999] bg-black">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-1.5 justify-between">
+              <DialogTitle className="flex items-center gap-10 justify-between">
                 <CanvasControls
                   state={state}
                   dispatch={dispatch}
@@ -178,11 +181,19 @@ export function EditProfileButton({ onMessageSent }: EditProfileButtonProps) {
               handleSubmit={handleSubmit}
             />
           </DialogContent>
+
         </Dialog>
+        
       )}
+      
     </>
   );
 }
+
+import { motion, AnimatePresence } from "framer-motion";
+import api, { third_api } from "@/lib/api";
+import { Card, CardContent, CardFooter } from "./ui/card";
+import OptimizedImage from "./OptimizedImage";
 
 const CanvasControls = ({
   state,
@@ -287,11 +298,11 @@ const CanvasControls = ({
   };
   return (
     <>
-      <div className="relative -my-3">
+      <div className="relative z-[9999]">
         <AnimatePresence>
           {showTools ? (
             <motion.div
-              className="flex items-center gap-1"
+              className="flex items-center gap-3 relative  "
               initial="hidden"
               animate="visible"
               exit="hidden"
@@ -315,17 +326,15 @@ const CanvasControls = ({
               </motion.button>
 
               <motion.button
-                className={`p-1.5 rounded-lg hover:bg-neutral-700 ${
-                  state.eraseMode ? "bg-neutral-600" : ""
-                }`}
+                className={`p-1.5 rounded-lg hover:bg-neutral-700 ${state.eraseMode ? "bg-neutral-600" : ""
+                  }`}
                 onClick={toggleEraseMode}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Eraser
-                  className={`w-5 h-5 ${
-                    state.eraseMode ? "opacity-100" : "opacity-70"
-                  }`}
+                  className={`w-5 h-5 ${state.eraseMode ? "opacity-100" : "opacity-70"
+                    }`}
                 />
               </motion.button>
 
@@ -413,6 +422,9 @@ const CanvasControls = ({
   );
 };
 
+
+
+
 function ProfileForm({
   state,
   dispatch,
@@ -435,8 +447,9 @@ function ProfileForm({
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [ip, setIp] = useState("");
-  
-  useEffect(() => {
+
+ 
+useEffect(() => {
     fetch("/api/geo")
       .then((res) => res.json())
       .then((data) => {
@@ -444,11 +457,8 @@ function ProfileForm({
           setIp(data.ip);
         }
       })
-      .catch(() => {
-        // Fallback or silence error
-      });
+      .catch(() => { });
   }, []);
-  
   const handleFormSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -475,6 +485,7 @@ function ProfileForm({
 
         const payload = {
           ...formData,
+
           image: upload_res.data?.data.direct_url,
           del_image: upload_res.data?.data.deletion_url,
           ip: ip,
@@ -485,14 +496,14 @@ function ProfileForm({
           handleSubmit(e);
         }
         if (response.error) {
-          fetch(upload_res.data?.data.deletion_url as string).catch(() => {});
+          fetch(upload_res.data?.data.deletion_url as string).catch(() => { });
           setErrorMessage(response.error);
         }
       } finally {
         setLoading(false);
       }
     },
-    [formData, handleSubmit, canvasRef, ip],
+    [formData, handleSubmit, canvasRef, ip]
   );
 
   const handleCanvasChange = useCallback(async () => {
@@ -508,7 +519,7 @@ function ProfileForm({
       isCanvasEmpty ||
       formData.message.trim().length < 3 ||
       formData.name.trim().length === 0,
-    [isCanvasEmpty, formData.message, formData.name],
+    [isCanvasEmpty, formData.message, formData.name]
   );
 
   const handleColorChange = (color: string) => {
@@ -516,11 +527,16 @@ function ProfileForm({
   };
 
   return (
+    <div className="">
     <form
       onSubmit={handleFormSubmit}
-      className="space-y-1.5 max-md:pb-3 max-md:px-4"
+      className="flex flex-col gap-2 max-md:pb-3 max-md:px-4"
     >
-      <div className="rounded-xl overflow-hidden">
+      <div className="rounded-xl overflow-hidden"
+      style={{
+        paddingBottom: "clamp(0.5rem,0.5vw, 1rem)",
+      }}
+      >
         <SketchCanvas
           ref={canvasRef}
           onChange={handleCanvasChange}
@@ -532,20 +548,27 @@ function ProfileForm({
         />
       </div>
       <SimpleColorPicker onColorChange={handleColorChange} />
-      <div>
+      <div className="">
         <Input
           required
           placeholder="Name"
           value={formData.name}
+          style={{
+            padding: "clamp(0.5rem,1vw, 1rem) clamp(0.5rem,1vw, 1rem)",
+          }}
           onChange={(e) => {
             setFormData({ ...formData, name: e.target.value });
           }}
+          className="ring-black  ring-0 border-black"
         />
       </div>
       <div>
         <Textarea
           required
-          placeholder="Type your message here (max 130 characters)"
+          style={{
+            padding: "clamp(0.5rem,1vw, 1rem) clamp(0.5rem,1vw, 1rem)",
+          }}
+          placeholder="Type your message here"
           value={formData.message}
           onChange={(e) => {
             setFormData({ ...formData, message: e.target.value });
@@ -553,14 +576,14 @@ function ProfileForm({
               setHasError(false);
             }
           }}
-          className={cn({ "border-red-500": hasError })}
+          className="ring-black ring-0 border-black"
         />
         <p className="text-xs text-red-500 mt-2 ml-0.5">{errorMessage}</p>
       </div>
       <div>
         <Button
           type="submit"
-          className="w-full"
+          className="w-full bg-white text-black"
           disabled={isFormInvalid || loading}
         >
           {loading ? "Sending..." : "Send"}
@@ -571,15 +594,17 @@ function ProfileForm({
           onClick={() => setOpen?.(false)}
           type="button"
           variant={"outline"}
-          className="w-full md:hidden"
+          className="w-full border-0 bg-white/15 md:hidden"
         >
           Close
         </Button>
       </div>
     </form>
+
+    
+              </div>
   );
 }
-
 interface SimpleColorPickerProps {
   onColorChange?: (color: string) => void;
 }
@@ -612,9 +637,10 @@ function SimpleColorPicker({ onColorChange }: SimpleColorPickerProps) {
           key={color}
           onClick={() => handleColorSelect(color)}
           className={cn(
-            "w-5 h-5 rounded-full transition-transform cursor-pointer",
-            selectedColor === color && "ring-2 ring-white ring-offset-2 ring-offset-zinc-900",
-            color === "#FFFFFF" && "border border-zinc-700",
+            "w-5 h-5 rounded-full transition-transform",
+
+            selectedColor === color && "ring-2 ring-white ring-offset-zinc-900",
+            color === "#FFFFFF" && "border border-zinc-700"
           )}
           style={{ backgroundColor: color }}
         >
@@ -706,3 +732,4 @@ function StrokeWidth({ ...props }) {
     </svg>
   );
 }
+
