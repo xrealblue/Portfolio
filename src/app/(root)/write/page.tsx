@@ -48,9 +48,10 @@ const page = () => {
         padding: "clamp(0.5rem,1vw, 100rem)",
       }}
       className=''>
-      <div className="flex gap-3">
+      <div className="flex flex-col md:flex-row gap-3">
         <Image src="/me.jpg" style={{
           filter: "grayscale(100%)",
+          width: "clamp(10rem,1vw, 100rem)",
         }} alt="profile" width={100} height={100}
           className='w-137'
         />

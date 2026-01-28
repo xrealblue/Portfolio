@@ -18,8 +18,8 @@ const creativity = [
     link: "/play",
   },
   {
-    name: "Write",
-    link: "/write",
+    name: "Anime",
+    link: "/anime",
   },
   {
     name: "EthGlobal",
