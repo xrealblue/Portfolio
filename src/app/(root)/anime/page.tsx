@@ -1,7 +1,8 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useState } from 'react'
+import Link from 'next/link';
+import React, { useEffect, useRef, useState } from 'react'
 
 const Anime = [
     { name: "One Piece", image: "https://image.tmdb.org/t/p/original/cMD9Ygz11zjJzAovURpO75Qg7rT.jpg" },
@@ -70,64 +71,138 @@ const Anime = [
 
 const page = () => {
     const [isselect, setIsselect] = useState(-1)
+    const [isMobile, setIsMobile] = useState(false)
+    const containerRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768)
+        }
+        
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
+    useEffect(() => {
+        if (isMobile) return
+
+        const container = containerRef.current
+        if (!container) return
+
+        const rightContent = container.querySelector('.right-content') as HTMLElement
+        if (rightContent) {
+            const totalHeight = rightContent.scrollHeight
+            container.style.height = `${totalHeight}px`
+        }
+    }, [isMobile])
+
+    useEffect(() => {
+        if (isMobile) return
+
+        const handleScroll = () => {
+            const container = containerRef.current
+            if (!container) return
+
+            const leftContent = container.querySelector('.left-content') as HTMLElement
+            const rightContent = container.querySelector('.right-content') as HTMLElement
+            
+            if (!leftContent || !rightContent) return
+
+            const containerRect = container.getBoundingClientRect()
+            const scrollPercentage = Math.max(0, Math.min(1, -containerRect.top / (container.offsetHeight - window.innerHeight)))
+
+            const leftScrollHeight = leftContent.scrollHeight - window.innerHeight
+            const rightScrollHeight = rightContent.scrollHeight - window.innerHeight
+
+            leftContent.style.transform = `translateY(-${scrollPercentage * Math.max(0, leftScrollHeight)}px)`
+            rightContent.style.transform = `translateY(-${scrollPercentage * Math.max(0, rightScrollHeight)}px)`
+        }
+
+        window.addEventListener('scroll', handleScroll)
+        handleScroll()         
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+        }
+    }, [isMobile])
+
     return (
         <div
+            ref={containerRef}
             style={{
-                padding: 'clamp(1.5rem, 1vw, 240rem) clamp(0.5rem, 0.75vw, 2090rem) 0',
+                padding: 'clamp(1.5rem, 1vw, 240rem) clamp(0.5rem, 0.75vw, 2090rem)',
                 fontSize: "clamp(0.9rem, 1vw, 240rem)",
             }}
-            className='w-full h-full min-h-screen flex gap-4 group/page'>
-            <div className="w-[33%] flex flex-col gap-8 overflow-hidden">
-                <div className="leading-[1.35]">
-                    Reading sharpens my craft and broadens my understanding of the world. Many of my best ideas come from applying tangential topics, such as linguistics or architecture, to software design. I use Notion to track my reading and their API↗ to render them.
-                </div>
-
-                {/* ANime name here */}
-                <div className="flex flex-col pt-20 mono uppercase relative">
-                    {Anime.map((anime, index) => (
-                        <div className="relative cursor-pointer flex overflow-hidden"
-                            key={index}
-                        >
-                            <div
-                                onMouseEnter={() => setIsselect(index)}
-                                onMouseLeave={() => setIsselect(-1)}
-                                className={`text-sm w-full relative transition-all duration-300 ${
-                                    isselect === index ? 'text-yellow-400 translate-x-0' : 'text-white/35 translate-x-0'
-                                }`}
-                            >
-                                <div className={`${anime.name.length > 35 ? 'inline-block whitespace-nowrap' : ''} ${
-                                    isselect === index && anime.name.length > 35 ? 'animate-slide' : ''
-                                }`}>
-                                    {anime.name}
-                                </div>
-                                {anime.name.length > 35 && isselect !== index && (
-                                    <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-black to-transparent pointer-events-none"></div>
-                                )}
-                            </div>
-                            {index === isselect && (
-                                <div className="absolute bg-black right-0 text-yellow-400 text-sm">{"[VIEW]"}</div>
-                            )}
+            className={`w-full ${isMobile ? '' : 'relative'}`}>
+            
+            <div className={`w-full flex flex-col md:flex-row gap-4 group/page ${isMobile ? '' : 'sticky top-0 h-screen'}`}>
+                {/* Left Div */}
+                <div className={`w-full md:w-[33%] ${isMobile ? '' : 'h-screen overflow-hidden'}`}>
+                    <div 
+                        className={`left-content flex flex-col gap-8 ${isMobile ? '' : 'will-change-transform'}`}
+                    >
+                        <div className="leading-[1.35]">
+                           Watching anime sharpens my thinking and visual intuition. I{"'"}m drawn to complex characters, layered narratives, and the way emotion is conveyed through art, pacing, and music. Many of these stories influence how I think about user experience, world-building, and design systems, pushing me to approach software with more creativity and empathy.
                         </div>
-                    ))}
-                </div>
-            </div>
 
-            {/* ANime image here */}
-            <div className="grid grid-cols-6 gap-3 w-[67%]">
-                {Anime.map((anime, index) => (
-                    <Image
-                        width={200}
-                        height={200}
-                        onMouseEnter={() => setIsselect(index)}
-                        onMouseLeave={() => setIsselect(-1)}
-                        key={index}
-                        src={anime.image}
-                        alt={anime.name}
-                        className={`cursor-pointer transition-opacity duration-300 ${
-                            isselect === index ? 'opacity-100' : isselect === -1 ? 'opacity-100' : 'opacity-50'
-                        }`}
-                    />
-                ))}
+                        {/* Anime name here */}
+                        <div className="flex flex-col pt-20 mono uppercase relative">
+                            {Anime.map((anime, index) => (
+                                <div className="relative cursor-pointer flex"
+                                    key={index}
+                                >
+                                    <Link
+                                        href={`https://myanimelist.net/search/all?q=${anime.name}&cat=all`}
+                                        target="_blank"
+                                        onMouseEnter={() => setIsselect(index)}
+                                        onMouseLeave={() => setIsselect(-1)}
+                                        className={`text-sm w-full relative transition-all duration-200 ${
+                                            isselect === index ? 'text-yellow-400 translate-x-0' : 'text-white/35 translate-x-0'
+                                        }`}
+                                    >
+                                        <div className={`${anime.name.length > 35 ? 'inline-block whitespace-nowrap' : ''} ${
+                                            isselect === index && anime.name.length > 35 ? 'animate-slide' : ''
+                                        }`}>
+                                            {anime.name}
+                                        </div>
+                                        {anime.name.length > 35 && isselect !== index && (
+                                            <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-black to-transparent pointer-events-none"></div>
+                                        )}
+                                    </Link>
+                                    {index === isselect && (
+                                   <div     
+                                        className="absolute bg-black right-0 text-yellow-400 text-sm whitespace-nowrap">{"[VIEW]"}</div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right Div */}
+                <div className={`w-full md:w-[67%] ${isMobile ? '' : 'h-screen overflow-hidden'}`}>
+                    <div 
+                        className={`right-content ${isMobile ? '' : 'will-change-transform'}`}
+                    >
+                        <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                            {Anime.map((anime, index) => (
+                                <Image
+                                    width={200}
+                                    height={200}
+                                    onMouseEnter={() => setIsselect(index)}
+                                    onMouseLeave={() => setIsselect(-1)}
+                                    key={index}
+                                    src={anime.image}
+                                    alt={anime.name}
+                                    className={`cursor-pointer transition-opacity duration-200 ${
+                                        isselect === index ? 'opacity-100' : isselect === -1 ? 'opacity-100' : 'opacity-50'
+                                    }`}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <style jsx>{`
