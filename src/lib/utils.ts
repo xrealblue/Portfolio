@@ -1,7 +1,6 @@
   import { clsx, type ClassValue } from "clsx";
   import { ApiResponse } from "hmm-api";
   import { twMerge } from "tailwind-merge";
-  import { third_api } from "./api";
 
   export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
