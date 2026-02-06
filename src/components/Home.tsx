@@ -51,12 +51,12 @@ const Home = ({ activity }: { activity: LanyardResponse | undefined }) => {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Heet Vavadiya",
-    url: "https://heet.pro",
+    url: "https://realblue.lol",
     jobTitle: "Full Stack Developer",
     sameAs: [
-      "https://github.com/heetvadiya",
+      "https://github.com/xrealblue",
       "https://linkedin.com/in/heetvadiya",
-      "https://twitter.com/heetvavadiya",
+      "https://twitter.com/realbluex",
     ],
     knowsAbout: [
       "Web Development",

@@ -100,7 +100,6 @@ const Page = () => {
     >
       <div className='w-full mono flex flex-col gap-2 sm:gap-3'>
 
-        {/* Top Row - Numbers */}
         <div className='flex w-full gap-1 sm:gap-2 md:gap-3 justify-center mb-2 sm:mb-3'>
           {['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'q', 'w'].map((key) => (
             <button
@@ -114,7 +113,6 @@ const Page = () => {
           ))}
         </div>
 
-        {/* Middle Row - QWERTY */}
         <div className='flex gap-1 sm:gap-2 md:gap-3 justify-center mb-2 sm:mb-3'>
           {['e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f'].map((key) => (
             <button
@@ -128,7 +126,6 @@ const Page = () => {
           ))}
         </div>
 
-        {/* Bottom Row - ASDF */}
         <div className='flex gap-1 sm:gap-2 md:gap-3 justify-center mb-2 sm:mb-3 ml-0 sm:ml-4 md:ml-8'>
           {['g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'].map((key) => (
             <button
