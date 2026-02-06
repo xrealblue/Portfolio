@@ -25,7 +25,7 @@ const Navbar = () => {
       </div>
       <div className="flex w-[65%] md:w-1/2 md:justify-start justify-start">
         <div className="text-left w-[85%] md:w-[35%] items-center flex">
-          <div className=" ">Web3 Developer</div>
+          <div className=" ">Web Developer</div>
         </div>
 
         <div className="text-left w-[40%] md:w-[55%] items-center flex">

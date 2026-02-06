@@ -17,7 +17,7 @@ const Anime = [
     { name: "classroom of the elite", image: "https://image.tmdb.org/t/p/original/yuHanbUUIv2UWRxxQFt9n8jtmOJ.jpg" },
     { name: "Tomodachi Game", image: "https://image.tmdb.org/t/p/original/l9wfsCpH5Zot8PSskCShqiQc9I4.jpg" },
     { name: "Danganronpa: The Animation", image: "https://image.tmdb.org/t/p/original/2XKziwAUwPiOonJfSJxnEzFPNSU.jpg" },
-     { name: "JUJUTSU KAISEN", image: "https://image.tmdb.org/t/p/original/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg" },
+    { name: "JUJUTSU KAISEN", image: "https://image.tmdb.org/t/p/original/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg" },
     { name: "Masamune-kun's Revenge", image: "https://image.tmdb.org/t/p/original/lOkjPZ2EO0K1H0CgRAd8SLBTOav.jpg" },
     { name: "TONIKAWA", image: "https://image.tmdb.org/t/p/original/jJKTrIfZKoFV66HGMzSa4tkObK0.jpg" },
     { name: "Re:zero", image: "https://assets.anime.com/updates-media/49c18f74_rezeroseason4.jpeg" },
@@ -78,10 +78,10 @@ const page = () => {
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 768)
         }
-        
+
         checkMobile()
         window.addEventListener('resize', checkMobile)
-        
+
         return () => window.removeEventListener('resize', checkMobile)
     }, [])
 
@@ -107,7 +107,7 @@ const page = () => {
 
             const leftContent = container.querySelector('.left-content') as HTMLElement
             const rightContent = container.querySelector('.right-content') as HTMLElement
-            
+
             if (!leftContent || !rightContent) return
 
             const containerRect = container.getBoundingClientRect()
@@ -121,7 +121,7 @@ const page = () => {
         }
 
         window.addEventListener('scroll', handleScroll)
-        handleScroll()         
+        handleScroll()
         return () => {
             window.removeEventListener('scroll', handleScroll)
         }
@@ -135,15 +135,15 @@ const page = () => {
                 fontSize: "clamp(0.9rem, 1vw, 240rem)",
             }}
             className={`w-full ${isMobile ? '' : 'relative'}`}>
-            
+
             <div className={`w-full flex flex-col md:flex-row gap-4 group/page ${isMobile ? '' : 'sticky top-0 h-screen'}`}>
                 {/* Left Div */}
                 <div className={`w-full md:w-[33%] ${isMobile ? '' : 'h-screen overflow-hidden'}`}>
-                    <div 
+                    <div
                         className={`left-content flex flex-col gap-8 ${isMobile ? '' : 'will-change-transform'}`}
                     >
                         <div className="leading-[1.35]">
-                           Watching anime sharpens my thinking and visual intuition. I{"'"}m drawn to complex characters, layered narratives, and the way emotion is conveyed through art, pacing, and music. Many of these stories influence how I think about user experience, world-building, and design systems, pushing me to approach software with more creativity and empathy.
+                            Watching anime sharpens my thinking and visual intuition. I{"'"}m drawn to complex characters, layered narratives, and the way emotion is conveyed through art, pacing, and music. Many of these stories influence how I think about user experience, world-building, and design systems, pushing me to approach software with more creativity and empathy.
                         </div>
 
                         {/* Anime name here */}
@@ -157,13 +157,11 @@ const page = () => {
                                         target="_blank"
                                         onMouseEnter={() => setIsselect(index)}
                                         onMouseLeave={() => setIsselect(-1)}
-                                        className={`text-sm w-full relative transition-all duration-200 ${
-                                            isselect === index ? 'text-yellow-400 translate-x-0' : 'text-white/35 translate-x-0'
-                                        }`}
+                                        className={`text-sm w-full relative transition-all duration-200 ${isselect === index ? 'text-yellow-400 translate-x-0' : 'text-white/35 translate-x-0'
+                                            }`}
                                     >
-                                        <div className={`${anime.name.length > 35 ? 'inline-block whitespace-nowrap' : ''} ${
-                                            isselect === index && anime.name.length > 35 ? 'animate-slide' : ''
-                                        }`}>
+                                        <div className={`${anime.name.length > 35 ? 'inline-block whitespace-nowrap' : ''} ${isselect === index && anime.name.length > 35 ? 'animate-slide' : ''
+                                            }`}>
                                             {anime.name}
                                         </div>
                                         {anime.name.length > 35 && isselect !== index && (
@@ -171,8 +169,8 @@ const page = () => {
                                         )}
                                     </Link>
                                     {index === isselect && (
-                                   <div     
-                                        className="absolute bg-black right-0 text-yellow-400 text-sm whitespace-nowrap">{"[VIEW]"}</div>
+                                        <div
+                                            className="absolute bg-black right-0 text-yellow-400 text-sm whitespace-nowrap">{"[VIEW]"}</div>
                                     )}
                                 </div>
                             ))}
@@ -182,7 +180,7 @@ const page = () => {
 
                 {/* Right Div */}
                 <div className={`w-full md:w-[67%] ${isMobile ? '' : 'h-screen overflow-hidden'}`}>
-                    <div 
+                    <div
                         className={`right-content ${isMobile ? '' : 'will-change-transform'}`}
                     >
                         <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
@@ -195,9 +193,8 @@ const page = () => {
                                     key={index}
                                     src={anime.image}
                                     alt={anime.name}
-                                    className={`cursor-pointer transition-opacity duration-200 ${
-                                        isselect === index ? 'opacity-100' : isselect === -1 ? 'opacity-100' : 'opacity-50'
-                                    }`}
+                                    className={`cursor-pointer transition-opacity duration-200 ${isselect === index ? 'opacity-100' : isselect === -1 ? 'opacity-100' : 'opacity-50'
+                                        }`}
                                 />
                             ))}
                         </div>
