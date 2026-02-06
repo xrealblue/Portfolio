@@ -15,16 +15,17 @@ export interface Project {
 
 export const projectData: Project[] = [
   {
-    id: 1,
+    id: 0,
     type: 'image',
-    title: 'Sunflower',
-    subtitle: 'find your music buddy.',
+    title: 'TrackYou',
+    subtitle: 'Track your coding activity.',
     link: '',
-    image: '/preview/sunflower.jpg',
-    textColor: '#333333',
+    image: '/preview/trackyou.png',
+    textColor: '#010101ff',
     logoImage: true,
     locked: true
   },
+
 
   {
     id: 2,
@@ -36,12 +37,32 @@ export const projectData: Project[] = [
     textColor: '#333333',
     logoImage: true
   },
- 
+  {
+    id: 1,
+    type: 'image',
+    title: 'Moco',
+    subtitle: 'The Trading Newspaper',
+    link: '/moco',
+    image: '/preview/moco.png',
+    textColor: '#010101ff',
+    logoImage: true,
+  },
+  {
+    id: 3,
+    type: 'image',
+    title: 'Sunflower',
+    subtitle: 'find All about your music Artist',
+    link: '/sunflower',
+    image: '/preview/sunflower.png',
+    textColor: '#010101ff',
+    logoImage: true,
+  },
+
   {
     id: 4,
     type: 'image',
     title: 'midway',
-    subtitle: 'Your cross-chain payment solution.',
+    subtitle: 'Your cross-chain payment solution',
     link: '/midway',
     image: '/preview/midway.png',
     textColor: '#333333',
@@ -51,7 +72,7 @@ export const projectData: Project[] = [
     id: 5,
     type: 'image',
     title: 'Kafinao',
-    subtitle: "A Coffee shop NFTs",
+    subtitle: "NewYork times paper about COffee",
     link: 'kafinao',
 
     image: '/preview/kafinao.png',
@@ -59,13 +80,35 @@ export const projectData: Project[] = [
     logoImage: true
   },
   {
+    id: 5,
+    type: 'image',
+    title: 'Mewswap Dex',
+    subtitle: "You can trade my MEW and Cat token",
+    link: 'mewswap',
+
+    image: '/preview/mewswap.png',
+    textColor: '#333333',
+    logoImage: true
+  },
+  {
     id: 6,
     type: 'image',
     title: 'SpeedCast',
-    subtitle: 'better api client than axios.',
+    subtitle: 'better api client than axios',
     link: 'speedcast',
 
     image: '/preview/speedcast.gif',
+    textColor: '#333333',
+    logoImage: true
+  },
+  {
+    id: 9,
+    type: 'image',
+    title: 'unipay Exchange',
+    subtitle: "made in ETHGlobal",
+    link: 'unipay',
+
+    image: '/preview/unipay.png',
     textColor: '#333333',
     logoImage: true
   },
@@ -114,7 +157,7 @@ export const projectPageData: ProjectPageData[] = [
         link: 'https://www.google.com/search?q=vaayu+jewels&oq=vaayu+jewels&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORiABDINCAEQABiGAxiABBiKBTIKCAIQABiABBiiBDIKCAMQABiABBiiBDIKCAQQABiABBiiBDIKCAUQABiABBiiBDIKCAYQABiABBiiBNIBCDc0NzZqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8',
         text: 'SEO',
       },
-    ],  
+    ],
     data: [
       {
         image: '/projects/vaayujewels/2.png',
@@ -150,8 +193,8 @@ export const projectPageData: ProjectPageData[] = [
         link: 'https://speedcast.heet.pro/',
         text: 'MAIN WEBSITE',
       },
-      
-    ],  
+
+    ],
     data: [
       {
         image: "/projects/speedcast/2.png",
@@ -193,7 +236,7 @@ export const projectPageData: ProjectPageData[] = [
     description2: "Midway is deployed on Optimism, Ethereum, Unichain, Zora, Base, World Chain, Polygon, and Ink Ethereum, with Optimism serving as the core network while the others act as client networks.↗",
     role: ['Developer.'],
     collaborators: ['Solo'],
-    techStack: ['OpenZeppelin', 'LayerZero V2','Wagmi','Viem', 'Hardhat v3', 'TypeScript'],
+    techStack: ['OpenZeppelin', 'LayerZero V2', 'Wagmi', 'Viem', 'Hardhat v3', 'TypeScript'],
     timeline: '2025',
     rlinks: [
       {
@@ -208,8 +251,8 @@ export const projectPageData: ProjectPageData[] = [
         link: 'https://github.com/heetprox/Midway',
         text: 'Frontend',
       },
-      
-    ],  
+
+    ],
     data: [
       {
         image: "/projects/midway/1.png",
@@ -223,7 +266,7 @@ export const projectPageData: ProjectPageData[] = [
         image: "/projects/midway/5.png",
         description: "this are the networks that are supported by midway."
       },
-     
+
 
     ]
 
@@ -243,7 +286,7 @@ export const projectPageData: ProjectPageData[] = [
     description2: "I’m building Kafinao from the ground up: a full‑stack NFT showcase inspired by coffee shops worldwide↗",
     role: ['Full Stack Developer.', 'Designer.'],
     collaborators: ['Solo'],
-    techStack: ['Next.js', 'Tailwind CSS', 'TypeScript','GSAP','Framer-motion'],
+    techStack: ['Next.js', 'Tailwind CSS', 'TypeScript', 'GSAP', 'Framer-motion'],
     timeline: 'JAN 2025',
     rlinks: [
       {
@@ -254,7 +297,7 @@ export const projectPageData: ProjectPageData[] = [
         link: 'https://www.google.com/search?q=kafinao.store',
         text: 'SEO',
       },
-    ],  
+    ],
     data: [
       {
         image: '/projects/kafinao/1.png',
@@ -279,7 +322,166 @@ export const projectPageData: ProjectPageData[] = [
       },
     ]
   },
-  
+
+
+
+
+  {
+    link: 'moco',
+    title: 'moco',
+    poster: '/projects/moco/0.png',
+    subtitle: "The Trading Newspaper",
+    description1: "Moco is a trading newspaper that provides the latest news and information about the stock market in your mailbox. It is a platform that allows users to stay updated with the latest trends and developments in the stock market.↗",
+    description2: "I’m building Moco from the ground up: a full‑stack trading newspaper that provides the latest news and information about the stock market in your mailbox with gemini analysis.↗",
+    role: ['Full Stack Developer.'],
+    collaborators: ['Solo'],
+    techStack: ['Next.js', 'Brevo OTP mail', 'TradingView', 'BetterAuth', 'Gemini API', 'TailwindCSS', 'TypeScript', 'Inngest APi'],
+    timeline: 'DEC 2025',
+    rlinks: [
+      {
+        link: 'https://www.moco.realblue.lol/',
+        text: 'MAIN WEBSITE',
+      },
+      {
+        link: 'https://github.com/xrealblue/moco',
+        text: 'GITHUB',
+      },
+    ],
+    data: [
+      {
+        image: '/projects/moco/1.png',
+      },
+      {
+        image: '/projects/moco/2.png',
+      },
+      {
+        image: '/projects/moco/3.png',
+      },
+      {
+        image: '/projects/moco/4.png',
+      },
+      {
+        image: '/projects/moco/5.png',
+      },
+      {
+        image: '/projects/moco/6.png',
+      },
+    ]
+  },
+
+
+  {
+    link: 'mewswap',
+    title: 'Mewswap',
+    poster: '/projects/mewswap/0.png',
+    subtitle: "The Trading Newspaper",
+    description1: "Mewswap dex is about you can swap MEW token and CAT token on UniswapV2 that i have not you :) ",
+    description2: "Just Visit Github.↗",
+    role: ['Full Stack Developer.'],
+    collaborators: ['Solo'],
+    techStack: ['Next.js', 'UniswapV2', 'Solidity', 'Foundry', 'TypeScript', 'TailwindCSS'],
+    timeline: 'DEC 2025',
+    rlinks: [
+      {
+        link: 'https://www.mewswap.realblue.lol/',
+        text: 'MAIN WEBSITE',
+      },
+      {
+        link: 'https://github.com/xrealblue/MewDex',
+        text: 'GITHUB',
+      },
+    ],
+    data: []
+  },
+
+
+  {
+    link: 'unipay',
+    title: 'unipay Exchange',
+    poster: '/projects/unipay/0.png',
+    subtitle: "made in ETHGlobal",
+    description1: "Unipay.Exchange is the 1st FIAT to DeFi onramp using UPI payments to make the vast liquidity available to the masses. The platform allows users to purchase cryptocurrencies directly in their native form by just scanning a UPI QR code and making an INR payment—no complicated onboarding, no centralized custody.↗",
+    description2: "The platform leverages Uniswap V4 hooks to facilitate the transaction via a treasury and Pyth Network’s real-time price feeds to ensure transparent INR-to-crypto conversion rates verified on-chain!↗",
+    role: ['Full Stack Developer.'],
+    collaborators: ['Yagna RDK', 'Vaibhav Huddle01'],
+    techStack: ['UniswapV4', 'Solidity', 'Next.js', 'Foundry', 'Pyth Network', 'TypeScript', 'TailwindCSS'],
+    timeline: 'SEP 2025',
+    rlinks: [
+      {
+        link: 'https://unipay-final.vercel.app/',
+        text: 'MAIN WEBSITE',
+      },
+      {
+        link: 'https://ethglobal.com/showcase/unipay-exchange-ev92h',
+        text: 'ETHGLOBAL 2025',
+      },
+    ],
+    data: [
+      {
+        image: '/projects/unipay/1.png',
+      },
+      {
+        image: '/projects/unipay/2.png',
+      },
+    ]
+  },
+
+  {
+    link: 'sunflower',
+    title: 'sunflower',
+    poster: '/projects/sunflower/0.png',
+    subtitle: "Find Your Favorite Spotify Artist",
+    description1: "Sunflower is a platform that allows users to find their favorite Spotify artists. user can see their albums and on new album release user get notified about new tracks↗",
+    description2: "I’m building Sunflower from the ground up: a full‑stack platform that allows users to find their favorite Spotify artists with spotify apis↗",
+    role: ['Full Stack Developer.'],
+    collaborators: ['Solo'],
+    techStack: ['Next.js', 'Express.js', 'BetterAuth', 'SpotifyAPI', 'JWT-OAUTH-GOOGLE', 'TypeScript'],
+    timeline: 'JAN 2026',
+    rlinks: [
+      {
+        link: 'https://www.sunflower.realblue.lol/',
+        text: 'MAIN WEBSITE',
+      },
+      {
+        link: 'https://github.com/xrealblue/sunflower',
+        text: 'FRONTEND GITHUB',
+      },
+      {
+        link: 'https://github.com/xrealblue/sunflower-backend',
+        text: 'BACKEND GITHUB',
+      },
+    ],
+    data: [
+      {
+        image: '/projects/sunflower/1.png',
+      },
+      {
+        image: '/projects/sunflower/2.png',
+      },
+      {
+        image: '/projects/sunflower/3.png',
+      },
+      {
+        image: '/projects/sunflower/4.png',
+      },
+      {
+        image: '/projects/sunflower/5.png',
+      },
+      {
+        image: '/projects/sunflower/6.png',
+      },
+      {
+        image: '/projects/sunflower/7.png',
+      },
+      {
+        image: '/projects/sunflower/8.png',
+      },
+      {
+        image: '/projects/sunflower/8.png',
+      },
+    ]
+  },
+
 ]
 
 

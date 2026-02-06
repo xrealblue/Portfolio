@@ -23,7 +23,7 @@ const creativity = [
   },
   {
     name: "EthGlobal",
-    link: "/https://ethglobal.com/showcase/unipay-exchange-ev92h",
+    link: "https://ethglobal.com/showcase/unipay-exchange-ev92h",
   },
 ];
 
