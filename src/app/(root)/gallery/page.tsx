@@ -3,7 +3,8 @@
 import OptimizedImage from '@/components/Image';
 import { useImageIntersection } from '@/hooks/useImageIntersection';
 import { useOptimizedDataFetch } from '@/hooks/useOptimizedDataFetch';
-import React, { useRef, useEffect, useState } from 'react'
+import { useSmoothScroll } from '@/context/SmoothScrollProvider';
+import React, { useRef, useEffect, useState, useCallback } from 'react'
 
 const base_url = process.env.NEXT_PUBLIC_BASE_URL
 
@@ -40,7 +41,7 @@ const LazyImage: React.FC<{
   });
 
   return (
-    <div 
+    <div
       ref={ref as React.RefObject<HTMLDivElement>}
       className={`overflow-hidden hover:shadow-md transition-shadow duration-300 ${className}`}
     >
@@ -135,6 +136,8 @@ const GalleryPage = () => {
   const [activePostId, setActivePostId] = useState<string | null>(null);
   const [hoveredPostId, setHoveredPostId] = useState<string | null>(null);
   const postRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const activePostIdRef = useRef<string | null>(null);
+  const { scrollTo: lenisScrollTo } = useSmoothScroll();
 
   // Use the optimized data fetch hook
   const { data, loading, error } = useOptimizedDataFetch<Post[]>({
@@ -159,7 +162,7 @@ const GalleryPage = () => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight / 2;
 
-      let currentPost = null;
+      let currentPost: string | null = null;
       let minDistance = Infinity;
 
       Object.entries(postRefs.current).forEach(([postId, element]) => {
@@ -177,7 +180,8 @@ const GalleryPage = () => {
         }
       });
 
-      if (currentPost !== activePostId) {
+      if (currentPost !== activePostIdRef.current) {
+        activePostIdRef.current = currentPost;
         setActivePostId(currentPost);
       }
     };
@@ -186,31 +190,15 @@ const GalleryPage = () => {
     handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [data, activePostId]);
+  }, [data]);
 
   const scrollToPostAlternative = (postId: string) => {
     const element = postRefs.current[postId];
     if (element) {
-      const titleElement = element.querySelector('h2');
-      if (titleElement) {
-        const titleRect = titleElement.getBoundingClientRect();
-        const absoluteTitleTop = titleRect.top + window.pageYOffset;
-        const offset = 80;
-
-        window.scrollTo({
-          top: absoluteTitleTop - offset,
-          behavior: 'smooth'
-        });
-      } else {
-        const elementRect = element.getBoundingClientRect();
-        const absoluteElementTop = elementRect.top + window.pageYOffset;
-        const offset = 100;
-
-        window.scrollTo({
-          top: absoluteElementTop - offset,
-          behavior: 'smooth'
-        });
-      }
+      lenisScrollTo(element, {
+        offset: -80,
+        duration: 3,
+      });
     }
   };
 
@@ -287,9 +275,9 @@ const GalleryPage = () => {
                         gap: "clamp(0.5rem, 0.5vw, 240rem)",
                         height: "clamp(0.5rem, 0.5vw, 240rem)",
                       }}
-                        onMouseEnter={() => setHoveredPostId(post._id)} 
-                        onMouseLeave={() => setHoveredPostId(null)} 
-                        onClick={() => scrollToPostAlternative(post._id)}
+                      onMouseEnter={() => setHoveredPostId(post._id)}
+                      onMouseLeave={() => setHoveredPostId(null)}
+                      onClick={() => scrollToPostAlternative(post._id)}
 
                       key={post._id}
                     >

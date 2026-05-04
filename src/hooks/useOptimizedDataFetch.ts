@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios, { AxiosError } from 'axios';
 interface Post {
   _id: string;
@@ -43,6 +43,18 @@ export function useOptimizedDataFetch<T>({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Use refs for values that shouldn't trigger re-fetching
+  const onSuccessRef = useRef(onSuccess);
+  const onErrorRef = useRef(onError);
+  const sortFunctionRef = useRef(sortFunction);
+  const headersRef = useRef(headers);
+
+  // Keep refs up to date
+  useEffect(() => { onSuccessRef.current = onSuccess; }, [onSuccess]);
+  useEffect(() => { onErrorRef.current = onError; }, [onError]);
+  useEffect(() => { sortFunctionRef.current = sortFunction; }, [sortFunction]);
+  useEffect(() => { headersRef.current = headers; }, [headers]);
+
   useEffect(() => {
     const fetchData = async () => {
       // Check if we have cached data
@@ -56,7 +68,7 @@ export function useOptimizedDataFetch<T>({
             if (!isExpired) {
               setData(cachedData.data);
               setLoading(false);
-              onSuccess?.(cachedData.data);
+              onSuccessRef.current?.(cachedData.data);
               return; // Use cached data and skip API call
             }
           }
@@ -71,16 +83,16 @@ export function useOptimizedDataFetch<T>({
           headers: {
             'Connection': 'keep-alive',
             'Accept': 'application/json',
-            ...headers
+            ...headersRef.current
           },
         });
 
         let responseData: T = response.data;
 
         // Apply sorting if provided
-        if (sortFunction && Array.isArray(responseData)) {
+        if (sortFunctionRef.current && Array.isArray(responseData)) {
           // Create a properly typed copy for sorting
-          responseData = [...responseData].sort(sortFunction) as T;
+          responseData = [...responseData].sort(sortFunctionRef.current) as T;
         }
 
         // Cache the data if cacheKey is provided
@@ -96,7 +108,7 @@ export function useOptimizedDataFetch<T>({
         }
 
         setData(responseData);
-        onSuccess?.(responseData);
+        onSuccessRef.current?.(responseData);
       } catch (error) {
         let errorMessage = 'Unable to fetch data from the API. Please try again later.';
 
@@ -114,14 +126,15 @@ export function useOptimizedDataFetch<T>({
         }
         
         setError(errorMessage);
-        onError?.(errorMessage);
+        onErrorRef.current?.(errorMessage);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [url, cacheKey, cacheDuration,onSuccess,onError, sortFunction,headers]);
+    // Only re-fetch when the actual fetch parameters change, not callbacks/headers
+  }, [url, cacheKey, cacheDuration]);
 
   return { data, loading, error };
 }

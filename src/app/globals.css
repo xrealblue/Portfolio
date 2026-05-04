@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
-*{
+html {
+  scroll-behavior: smooth;
+}
+
+* {
   /* border: 1px solid red; */
   margin: 0;
   padding: 0;
@@ -9,14 +13,17 @@
 
 
 ::selection {
-  background-color: black; 
-  color: #FDE037; 
+  background-color: black;
+  color: #FDE037;
 }
 
 @keyframes fadeInOut {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
@@ -27,3 +34,47 @@
 }
 
 
+::view-transition-old(root) {
+  animation: none;
+}
+
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-group(root) {
+  animation-duration: 0.8s;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@keyframes slide-from-top-left {
+  from {
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    transform: translate(0, 0);
+  }
+
+  to {
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    transform: translate(-100%, -100%);
+  }
+}
+
+@keyframes slide-from-bottom-right {
+  from {
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    transform: translate(0, 0);
+  }
+
+  to {
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    transform: translate(100%, 100%);
+  }
+}
+
+::view-transition-old(root) {
+  animation: 0.6s cubic-bezier(0.76, 0, 0.24, 1) both slide-from-top-left;
+}
+
+::view-transition-new(root) {
+  animation: 0.6s cubic-bezier(0.76, 0, 0.24, 1) both slide-from-bottom-right;
+}

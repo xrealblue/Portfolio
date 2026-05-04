@@ -2,6 +2,7 @@ import React from 'react'
 import { projectData, Project } from '@/data/Projcets'
 import Link from 'next/link';
 import Image from 'next/image';
+import TransitionLink from './TransitionLink';
 
 
 
@@ -45,7 +46,7 @@ const Projects = () => {
             }}
           >
             {column.map((project: Project) => (
-              <Link href={project.locked ? '#':`/projects/${project.link}`}
+              <TransitionLink href={project.locked ? '#' : `/projects/${project.link}`}
                 key={project.id}
               >
 
@@ -126,7 +127,7 @@ const Projects = () => {
                   }
 
                 </div>
-              </Link>
+              </TransitionLink>
 
             ))}
 

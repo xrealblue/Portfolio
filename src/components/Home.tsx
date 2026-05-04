@@ -3,6 +3,7 @@ import { LanyardResponse } from "react-use-lanyard";
 import ActivityCard from "./ActivityCard";
 import Link from "next/link";
 import JsonLd from "./JsonLd";
+import TransitionLink from "./TransitionLink";
 
 const creativity = [
   {
@@ -115,7 +116,7 @@ const Home = ({ activity }: { activity: LanyardResponse | undefined }) => {
 
             <div className=" p-4  w-fit">
               <ActivityCard
-                userId="1357551929374408734"
+                userId="1118212847613247558"
                 initialData={activity}
               />
             </div>
@@ -138,9 +139,9 @@ const Home = ({ activity }: { activity: LanyardResponse | undefined }) => {
               </h3>
               <div className="flex flex-col md:w-[15%]">
                 {creativity.map((can, index) => (
-                  <Link
+                  <TransitionLink
                     href={can.link}
-                    target={index !== 0 ? "_blank" : undefined}
+                    target={can.link.startsWith("http") ? "_blank" : undefined}
                     rel="noopener noreferrer"
                     key={index}
                   >
@@ -152,7 +153,7 @@ const Home = ({ activity }: { activity: LanyardResponse | undefined }) => {
                         {index + 1}
                       </span>
                     </div>
-                  </Link>
+                  </TransitionLink>
                 ))}
               </div>
             </div>

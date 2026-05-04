@@ -3,10 +3,7 @@ import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 
 const socials = [
-  {
-    name: "Gallery",
-    link: "/gallery",
-  },
+
   {
     name: "Twitter",
     link: "https://www.twitter.com/realbluex/",
@@ -36,7 +33,10 @@ const Footer = () => {
   useEffect(() => {
     if (!isPaused) {
       intervalRef.current = setInterval(() => {
-        setPosition((prev) => prev - 10);
+        setPosition((prev) => {
+          const next = prev - 10;
+          return next <= -2000 ? 0 : next;
+        });
       }, 300);
     } else {
       if (intervalRef.current) {
@@ -50,12 +50,6 @@ const Footer = () => {
       }
     };
   }, [isPaused]);
-
-  useEffect(() => {
-    if (position <= -2000) {
-      setPosition(0);
-    }
-  }, [position]);
 
   return (
     <div className="flex flex-col w-full">
@@ -81,10 +75,10 @@ const Footer = () => {
                   "clamp(0.25rem, 0.25vw, 20rem) clamp(0.5rem, 0.5vw, 20rem)",
               }}
             >
-              {"v1.2.1"}
+              {"v1.3.0"}
             </div>
             <div className="flex text-white/50 mono scale-90 tracking-tight uppercase">
-              Last updated 2026-2-7
+              Last updated 2026-5-4
             </div>
           </div>
 

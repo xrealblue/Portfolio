@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import TransitionLink from "./TransitionLink";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -33,12 +34,12 @@ const Navbar = () => {
         </div>
 
         {!isHome && (
-          <Link
+          <TransitionLink
             href="/"
             className="flex text-white cursor-pointer w-[10%] justify-end"
           >
             <X className="text-white" />
-          </Link>
+          </TransitionLink>
         )}
       </div>
     </nav>
