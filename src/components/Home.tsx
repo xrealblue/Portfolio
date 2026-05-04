@@ -115,7 +115,7 @@ const Home = ({ activity }: { activity: LanyardResponse | undefined }) => {
 
             <div className=" p-4  w-fit">
               <ActivityCard
-                userId="1118212847613247558"
+                userId="1357551929374408734"
                 initialData={activity}
               />
             </div>
