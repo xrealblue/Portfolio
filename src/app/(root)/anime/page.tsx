@@ -18,6 +18,13 @@ const Anime = [
     { name: "Tomodachi Game", image: "https://image.tmdb.org/t/p/original/l9wfsCpH5Zot8PSskCShqiQc9I4.jpg" },
     { name: "Danganronpa: The Animation", image: "https://image.tmdb.org/t/p/original/2XKziwAUwPiOonJfSJxnEzFPNSU.jpg" },
     { name: "JUJUTSU KAISEN", image: "https://image.tmdb.org/t/p/original/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg" },
+    { name: "My Hero Academia", image: "https://image.tmdb.org/t/p/w342/1u4HqgEKOmjXM8ENGtlrF4yXIwp.jpg" },
+
+    { name: "Full Metal Panic", image: "https://image.tmdb.org/t/p/w342/jjYo5Yl6W3RNZ7SjQlK0A8K20te.jpg" },
+
+    { name: "Ranking of Kings", image: "https://image.tmdb.org/t/p/w342/xN3RABgGy26CnD3LQDTRlOAHzwW.jpg" },
+    { name: "Zom 100", image: "https://image.tmdb.org/t/p/w342/XzOeAppGpnsSAiK82idkg0BoCt.jpg" },
+
     { name: "Masamune-kun's Revenge", image: "https://image.tmdb.org/t/p/original/lOkjPZ2EO0K1H0CgRAd8SLBTOav.jpg" },
     { name: "TONIKAWA", image: "https://image.tmdb.org/t/p/original/jJKTrIfZKoFV66HGMzSa4tkObK0.jpg" },
     { name: "Re:zero", image: "https://assets.anime.com/updates-media/49c18f74_rezeroseason4.jpeg" },
