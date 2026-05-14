@@ -38,7 +38,7 @@ const getActivityImageUrl = (activity: DiscordActivity) => {
         return decodeURIComponent(match[1]);
       }
     }
-    
+
     const httpsIndex = largeImage.indexOf("/https/");
     if (httpsIndex !== -1) {
       return `https://${largeImage.substring(httpsIndex + 7)}`;
@@ -108,17 +108,17 @@ export default function ActivityCard({
               />
             </div>
             <div className="flex flex-col medium-font justify-between">
-              
+
               <h2 className="mono uppercase tracking-tight"
               >
-                {activity.name === "Spotify" ? `Listening...` : `${activity.name === "Code" ? `Doing ${activity.name}...`: `${activity.name}`}`}
-             
-                 </h2>
+                {activity.name === "Spotify" ? `Listening...` : `${activity.name === "Code" ? `Doing ${activity.name}...` : `${activity.name}`}`}
+
+              </h2>
               <div className="flex flex-col"
                 style={{
                   fontSize: "clamp(0.8rem, 0.5vw, 240rem)",
                 }}
-              > 
+              >
                 <p className="text-neutral-100/90 mono uppercase  max-w-[250px] md:max-w-md truncate">
                   {activity.details}
                 </p>
