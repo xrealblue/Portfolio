@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 const Anime = [
   {
@@ -71,7 +71,6 @@ const Anime = [
       "https://image.tmdb.org/t/p/original/2XKziwAUwPiOonJfSJxnEzFPNSU.jpg",
     rate: 4,
   },
-
   {
     name: "Frieren",
     image: "https://image.tmdb.org/t/p/w342/dqZENchTd7lp5zht7BdlqM7RBhD.jpg",
@@ -87,7 +86,6 @@ const Anime = [
     image: "https://image.tmdb.org/t/p/w342/tpym31HVeQgenaubvCxkMF3kFHy.jpg",
     rate: 4,
   },
-
   {
     name: "JUJUTSU KAISEN",
     image:
@@ -253,7 +251,7 @@ const Anime = [
   {
     name: "Dr.stone",
     image:
-      "https://assets.anime.com/updates-media/bfcb7f4b_drstonesciencefuture.jpg",
+      "https://image.tmdb.org/t/p/w342/ve1Sv3sVArmE0nlFjzadcNv1G8r.jpg",
     rate: 3,
   },
   {
@@ -269,7 +267,7 @@ const Anime = [
     rate: 3,
   },
   {
-    name: "vinland sage",
+    name: "vinland saga",
     image:
       "https://image.tmdb.org/t/p/original/vUHlpA5c1NXkds59reY3HMb4Abs.jpg",
     rate: 5,
@@ -389,6 +387,7 @@ const Anime = [
   },
 ];
 
+// Memoized loader — no re-renders after mount
 const AnimeLoader = () => {
   const [phase, setPhase] = useState<"show" | "cut" | "gone">("show");
 
@@ -405,12 +404,11 @@ const AnimeLoader = () => {
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden pointer-events-none">
-      {/* Top-left triangle — flies to top-left */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          zIndex: 2, // ← above the text
+          zIndex: 2,
           background: "#facc15",
           clipPath: "polygon(0 0, 100% 0, 0 100%)",
           transform:
@@ -418,13 +416,11 @@ const AnimeLoader = () => {
           transition: "transform 0.7s cubic-bezier(0.76, 0, 0.24, 1)",
         }}
       />
-
-      {/* Bottom-right triangle — flies to bottom-right */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          zIndex: 2, // ← above the text
+          zIndex: 2,
           background: "#facc15",
           clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
           transform:
@@ -432,12 +428,10 @@ const AnimeLoader = () => {
           transition: "transform 0.7s cubic-bezier(0.76, 0, 0.24, 1)",
         }}
       />
-
-      {/* Anime list — sits UNDER the triangles */}
       <div
         className="absolute inset-0 flex flex-col justify-center px-12"
         style={{
-          zIndex: 1, // ← behind triangles
+          zIndex: 1,
           opacity: phase === "cut" ? 0 : 1,
           transition: "opacity 0.3s ease",
         }}
@@ -447,7 +441,7 @@ const AnimeLoader = () => {
             <div
               key={i}
               style={{
-                color: "rgba(255,255,255,0.7)", // ← white text on black bg
+                color: "rgba(255,255,255,0.7)",
                 fontSize: "0.75rem",
                 lineHeight: "1.6",
                 animation: `fadeUp 0.5s ease ${i * 60}ms both`,
@@ -467,40 +461,6 @@ const AnimeLoader = () => {
           </div>
         </div>
       </div>
-
-      <div
-        className="absolute inset-0 flex flex-col justify-center px-12"
-        style={{
-          opacity: phase === "cut" ? 0 : 1,
-          transition: "opacity 0.3s ease",
-        }}
-      >
-        <div className="flex flex-col mono uppercase">
-          {Anime.slice(0, 14).map((anime, i) => (
-            <div
-              key={i}
-              style={{
-                color: "rgba(0,0,0,0.6)",
-                fontSize: "0.75rem",
-                lineHeight: "1.6",
-                animation: `fadeUp 0.5s ease ${i * 60}ms both`,
-              }}
-            >
-              {anime.name}
-            </div>
-          ))}
-          <div
-            style={{
-              color: "rgba(0,0,0,0.3)",
-              fontSize: "0.75rem",
-              marginTop: "4px",
-            }}
-          >
-            +{Anime.length - 14} more
-          </div>
-        </div>
-      </div>
-
       <style jsx>{`
         @keyframes fadeUp {
           from {
@@ -516,11 +476,10 @@ const AnimeLoader = () => {
     </div>
   );
 };
-const StarRating = ({ rate, dimmed }: { rate: number; dimmed: boolean }) => (
-  <div
-    className="absolute top-1 right-1 z-10 flex flex-col gap-[3px] transition-opacity duration-200"
-    style={{ opacity: dimmed ? 0.5 : 1 }}
-  >
+
+// Static star SVG — rendered once per card, not per hover
+const StarRating = ({ rate }: { rate: number }) => (
+  <div className="absolute top-1 right-1 z-10 flex flex-col gap-[3px]">
     {Array.from({ length: 5 }).map((_, i) => (
       <svg key={i} width="14" height="14" viewBox="0 0 24 24">
         <polygon
@@ -540,6 +499,15 @@ const page = () => {
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Cache expensive measurements so scroll handler never reads DOM
+  const scrollDataRef = useRef({
+    leftEl: null as HTMLElement | null,
+    rightEl: null as HTMLElement | null,
+    leftMax: 0,
+    rightMax: 0,
+    containerHeight: 0,
+  });
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -547,47 +515,60 @@ const page = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  useEffect(() => {
-    if (isMobile) return;
+  // Measure once (and on resize) — never inside the scroll handler
+  const measureLayout = useCallback(() => {
     const container = containerRef.current;
     if (!container) return;
-    const rightContent = container.querySelector(
-      ".right-content",
-    ) as HTMLElement;
-    if (rightContent) container.style.height = `${rightContent.scrollHeight}px`;
-  }, [isMobile]);
+    const leftEl = container.querySelector(".left-content") as HTMLElement;
+    const rightEl = container.querySelector(".right-content") as HTMLElement;
+    if (!leftEl || !rightEl) return;
+
+    const rightScrollHeight = rightEl.scrollHeight;
+    container.style.height = `${rightScrollHeight}px`;
+
+    scrollDataRef.current = {
+      leftEl,
+      rightEl,
+      leftMax: Math.max(0, leftEl.scrollHeight - window.innerHeight),
+      rightMax: Math.max(0, rightScrollHeight - window.innerHeight),
+      containerHeight: rightScrollHeight,
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+    measureLayout();
+    window.addEventListener("resize", measureLayout);
+    return () => window.removeEventListener("resize", measureLayout);
+  }, [isMobile, measureLayout]);
 
   useEffect(() => {
     if (isMobile) return;
 
     let rafId: number;
+    let lastScrollY = -1;
+
     const handleScroll = () => {
+      // Skip if scroll position hasn't changed
+      if (window.scrollY === lastScrollY) return;
+      lastScrollY = window.scrollY;
+
+      cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        const container = containerRef.current;
-        if (!container) return;
-        const leftContent = container.querySelector(
-          ".left-content",
-        ) as HTMLElement;
-        const rightContent = container.querySelector(
-          ".right-content",
-        ) as HTMLElement;
-        if (!leftContent || !rightContent) return;
+        const { leftEl, rightEl, leftMax, rightMax, containerHeight } =
+          scrollDataRef.current;
+        if (!leftEl || !rightEl) return;
 
-        const containerRect = container.getBoundingClientRect();
-        const scrollPercentage = Math.max(
-          0,
-          Math.min(
-            1,
-            -containerRect.top / (container.offsetHeight - window.innerHeight),
-          ),
-        );
+        const containerTop =
+          containerRef.current?.getBoundingClientRect().top ?? 0;
+        const denominator = containerHeight - window.innerHeight;
+        if (denominator <= 0) return;
 
-        const leftScrollHeight = leftContent.scrollHeight - window.innerHeight;
-        const rightScrollHeight =
-          rightContent.scrollHeight - window.innerHeight;
+        const pct = Math.max(0, Math.min(1, -containerTop / denominator));
 
-        leftContent.style.transform = `translateY(-${scrollPercentage * Math.max(0, leftScrollHeight)}px)`;
-        rightContent.style.transform = `translateY(-${scrollPercentage * Math.max(0, rightScrollHeight)}px)`;
+        // Only write transform — no layout reads inside RAF
+        leftEl.style.transform = `translateY(-${pct * leftMax}px)`;
+        rightEl.style.transform = `translateY(-${pct * rightMax}px)`;
       });
     };
 
@@ -599,6 +580,10 @@ const page = () => {
     };
   }, [isMobile]);
 
+  // Stable callbacks — avoid inline arrow functions in JSX
+  const handleEnter = useCallback((i: number) => () => setIsselect(i), []);
+  const handleLeave = useCallback(() => setIsselect(-1), []);
+
   return (
     <div
       ref={containerRef}
@@ -608,6 +593,8 @@ const page = () => {
       }}
       className={`w-full ${isMobile ? "" : "relative"}`}
     >
+      <AnimeLoader />
+
       <div
         className={`w-full flex flex-col md:flex-row gap-4 group/page ${isMobile ? "" : "sticky top-0 h-screen"}`}
       >
@@ -633,18 +620,12 @@ const page = () => {
                   <Link
                     href={`https://myanimelist.net/search/all?q=${anime.name}&cat=all`}
                     target="_blank"
-                    onMouseEnter={() => setIsselect(index)}
-                    onMouseLeave={() => setIsselect(-1)}
-                    className={`text-sm w-full relative transition-all duration-200 ${
-                      isselect === index ? "text-yellow-400" : "text-white/35"
-                    }`}
+                    onMouseEnter={handleEnter(index)}
+                    onMouseLeave={handleLeave}
+                    className={`text-sm w-full relative transition-colors duration-150 ${isselect === index ? "text-yellow-400" : "text-white/35"}`}
                   >
                     <div
-                      className={`${anime.name.length > 35 ? "inline-block whitespace-nowrap" : ""} ${
-                        isselect === index && anime.name.length > 35
-                          ? "animate-slide"
-                          : ""
-                      }`}
+                      className={`${anime.name.length > 35 ? "inline-block whitespace-nowrap overflow-hidden max-w-full" : ""} ${isselect === index && anime.name.length > 35 ? "animate-slide" : ""}`}
                     >
                       {anime.name}
                     </div>
@@ -652,7 +633,7 @@ const page = () => {
                       <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-black to-transparent pointer-events-none" />
                     )}
                   </Link>
-                  {index === isselect && (
+                  {isselect === index && (
                     <div className="absolute bg-black right-0 text-yellow-400 text-sm whitespace-nowrap">
                       {"[VIEW]"}
                     </div>
@@ -663,49 +644,39 @@ const page = () => {
           </div>
         </div>
 
-        {/* Right */}
+        {/* Right — CSS-driven hover via group, no per-card opacity state */}
         <div
           className={`w-full md:w-[67%] ${isMobile ? "" : "h-screen overflow-hidden"}`}
         >
           <div
             className={`right-content ${isMobile ? "" : "will-change-transform"}`}
           >
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+            {/*
+              Key perf change: opacity is driven by CSS classes, not React state per card.
+              When any card is hovered, .grid-hover class is added to the grid,
+              which dims all cards. The hovered card undims itself via :hover.
+              Zero JS in the hot path.
+            */}
+            <div
+              className={`grid grid-cols-3 md:grid-cols-6 gap-3 anime-grid ${isselect !== -1 ? "has-hover" : ""}`}
+            >
               {Anime.map((anime, index) => (
                 <div
                   key={index}
-                  className="relative cursor-pointer"
-                  onMouseEnter={() => setIsselect(index)}
-                  onMouseLeave={() => setIsselect(-1)}
-                  style={{
-                    transform:
-                      isselect === index
-                        ? "translate(-2px, -2px)"
-                        : "translate(0, 0)",
-                    boxShadow:
-                      isselect === index ? "4px 4px 0px #facc15" : "none",
-                    transition: "transform 0.15s ease, box-shadow 0.15s ease",
-                    contain: "layout style",
-                  }}
+                  className={`relative cursor-pointer anime-card ${isselect === index ? "is-active" : ""}`}
+                  onMouseEnter={handleEnter(index)}
+                  onMouseLeave={handleLeave}
                 >
                   <Image
                     width={200}
-                    height={200}
+                    height={300}
                     src={anime.image}
                     alt={anime.name}
-                    loading="lazy"
-                    className={`transition-opacity duration-200 block ${
-                      isselect === index
-                        ? "opacity-100"
-                        : isselect === -1
-                          ? "opacity-100"
-                          : "opacity-50"
-                    }`}
+                    loading={index < 12 ? "eager" : "lazy"}
+                    sizes="(max-width: 768px) 33vw, 11vw"
+                    className="block w-full h-auto"
                   />
-                  <StarRating
-                    rate={anime.rate}
-                    dimmed={isselect !== -1 && isselect !== index}
-                  />
+                  <StarRating rate={anime.rate} />
                 </div>
               ))}
             </div>
@@ -725,6 +696,24 @@ const page = () => {
         }
         .animate-slide {
           animation: slide 4s ease-in-out infinite;
+        }
+
+        /* CSS-only hover dimming — zero JS in hot path */
+        .anime-grid.has-hover .anime-card {
+          opacity: 0.4;
+          transition: opacity 0.15s ease;
+        }
+        .anime-grid.has-hover .anime-card.is-active {
+          opacity: 1;
+          transform: translate(-2px, -2px);
+          box-shadow: 4px 4px 0px #facc15;
+        }
+        .anime-card {
+          transition:
+            opacity 0.15s ease,
+            transform 0.15s ease,
+            box-shadow 0.15s ease;
+          contain: layout style paint;
         }
       `}</style>
     </div>
