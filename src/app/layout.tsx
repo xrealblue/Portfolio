@@ -1,9 +1,9 @@
-import './globals.css';
-import './fonts.css';
-import { ViewTransitions } from 'next-view-transitions';
-import DiscordMetadata from '@/components/DiscordMetadata';
-import { SmoothScrollProvider } from '@/context/SmoothScrollProvider';
-import TransitionOverlay from '@/components/TransitionOverlay';
+import "./globals.css";
+import "./fonts.css";
+import { ViewTransitions } from "next-view-transitions";
+import DiscordMetadata from "@/components/DiscordMetadata";
+import { SmoothScrollProvider } from "@/context/SmoothScrollProvider";
+import TransitionOverlay from "@/components/TransitionOverlay";
 
 export default function RootLayout({
   children,
@@ -18,7 +18,7 @@ export default function RootLayout({
         </head>
         <SmoothScrollProvider>
           <body className="bg-[#131313] text-white scrollbar-none overflow-y-auto">
-            <TransitionOverlay />  {/* ← add this */}
+            <TransitionOverlay /> {/* ← add this */}
             {children}
           </body>
         </SmoothScrollProvider>
