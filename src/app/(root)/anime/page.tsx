@@ -5,7 +5,7 @@ import Link from "next/link";
 import data from "../../../data/anime.json";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const AnimeLoader = () => {
+function AnimeLoader() {
   const [phase, setPhase] = useState<"show" | "cut" | "gone">("show");
 
   useEffect(() => {
@@ -92,7 +92,7 @@ const AnimeLoader = () => {
       `}</style>
     </div>
   );
-};
+}
 
 // Static star SVG — rendered once per card, not per hover
 const StarRating = ({ rate }: { rate: number }) => (
