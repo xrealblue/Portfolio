@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState, useCallback } from "react";
-import Anime from "./anime.json";
+import data from "../../../data/anime.json";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // Memoized loader — no re-renders after mount
 const AnimeLoader = () => {
@@ -55,7 +55,7 @@ const AnimeLoader = () => {
         }}
       >
         <div className="flex flex-col mono uppercase">
-          {Anime.slice(0, 14).map((anime, i) => (
+          {data.slice(0, 14).map((anime, i) => (
             <div
               key={i}
               style={{
@@ -75,7 +75,7 @@ const AnimeLoader = () => {
               marginTop: "4px",
             }}
           >
-            +{Anime.length - 14} more
+            +{data.length - 14} more
           </div>
         </div>
       </div>
@@ -230,7 +230,7 @@ const page = () => {
             </div>
 
             <div className="flex flex-col pt-20 mono uppercase relative">
-              {Anime.map((anime, index) => (
+              {data.map((anime, index) => (
                 <div className="relative cursor-pointer flex" key={index}>
                   <Link
                     href={`https://myanimelist.net/search/all?q=${anime.name}&cat=all`}
@@ -275,7 +275,7 @@ const page = () => {
             <div
               className={`grid grid-cols-3 md:grid-cols-6 gap-3 anime-grid ${isselect !== -1 ? "has-hover" : ""}`}
             >
-              {Anime.map((anime, index) => (
+              {data.map((anime, index) => (
                 <div
                   key={index}
                   className={`relative cursor-pointer anime-card ${isselect === index ? "is-active" : ""}`}
