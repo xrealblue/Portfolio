@@ -5,7 +5,6 @@ import Link from "next/link";
 import data from "../../../data/anime.json";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-// Memoized loader — no re-renders after mount
 const AnimeLoader = () => {
   const [phase, setPhase] = useState<"show" | "cut" | "gone">("show");
 
@@ -112,7 +111,7 @@ const StarRating = ({ rate }: { rate: number }) => (
   </div>
 );
 
-const page = () => {
+const Page = () => {
   const [isselect, setIsselect] = useState(-1);
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -335,4 +334,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
